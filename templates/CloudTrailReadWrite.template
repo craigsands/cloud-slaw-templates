@@ -1,0 +1,22 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Parameters:
+  BucketSuffix:
+    Description: The randomly generated suffix for the CloudTrail logs bucket
+    Type: String
+
+Resources:
+  CloudTrailReadWritePolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      Description: Allow read and write access to the main CloudTrail bucket
+      ManagedPolicyName: CloudTrailReadWrite
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: ""
+            Effect: Allow
+            Action:
+              - s3:PutObject
+              - s3:GetObject
+            Resource: !Sub 'arn:aws:s3:::aws-cloudtrail-logs-${AWS::AccountId}-${BucketSuffix}/*'
