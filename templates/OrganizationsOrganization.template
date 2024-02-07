@@ -1,0 +1,9 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Resources:
+  Organization:
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Type: AWS::Organizations::Organization
+    Properties:
+      FeatureSet: ALL

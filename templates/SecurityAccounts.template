@@ -1,0 +1,23 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Parameters:
+  OrganizationRootId:
+    Type: String
+
+  SecurityAuditEmail:
+    Type: String
+
+Resources:
+  SecurityOU:
+    Type: AWS::Organizations::OrganizationalUnit
+    Properties:
+      Name: Security
+      ParentId: !Ref OrganizationRootId
+
+  SecurityAudit:
+    Type: AWS::Organizations::Account
+    Properties:
+      AccountName: SecurityAudit
+      Email: !Ref SecurityAuditEmail
+      ParentIds:
+        - !Ref SecurityOU
