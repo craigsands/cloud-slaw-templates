@@ -1,0 +1,35 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Resources:
+  SCPDenyLeaveOrganization:
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Type: AWS::Organizations::Policy
+    Properties:
+      Type: SERVICE_CONTROL_POLICY
+      Name: SCPDenyLeaveOrganization
+      Content:
+        Version: "2012-10-17"
+        Statement:
+          Effect: Deny
+          Action:
+            - organizations:LeaveOrganization
+          Resource: '*'
+
+  SCPDenyRootAccount:
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Type: AWS::Organizations::Policy
+    Properties:
+      Type: SERVICE_CONTROL_POLICY
+      Name: SCPDenyRootAccount
+      Content:
+        Version: "2012-10-17"
+        Statement:
+          Effect: Deny
+          Action: '*'
+          Resource: '*'
+          Condition:
+            StringLike:
+              aws:PrincipalArn:
+                - arn:aws:iam::*:root
