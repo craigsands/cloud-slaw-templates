@@ -3,26 +3,35 @@ AWSTemplateFormatVersion: "2010-09-09"
 Description: Restrict the root account and the ability to leave AWS Organizations
 
 Resources:
-  SCPProtectRootAndOrg:
+  SCPDenyLeaveOrganization:
     DeletionPolicy: Retain
     UpdateReplacePolicy: Retain
     Type: AWS::Organizations::Policy
     Properties:
       Type: SERVICE_CONTROL_POLICY
-      Name: SCPProtectRootAndOrg
+      Name: SCPDenyLeaveOrganization
       Content:
         Version: "2012-10-17"
         Statement:
-          - Sid: SCPDenyLeaveOrganization
-            Effect: Deny
-            Action:
-              - organizations:LeaveOrganization
-            Resource: '*'
-          - Sid: SCPDenyRootAccount
-            Effect: Deny
-            Action: '*'
-            Resource: '*'
-            Condition:
-              StringLike:
-                aws:PrincipalArn:
-                  - arn:aws:iam::*:root
+          Effect: Deny
+          Action:
+            - organizations:LeaveOrganization
+          Resource: '*'
+
+  SCPDenyRootAccount:
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Type: AWS::Organizations::Policy
+    Properties:
+      Type: SERVICE_CONTROL_POLICY
+      Name: SCPDenyRootAccount
+      Content:
+        Version: "2012-10-17"
+        Statement:
+          Effect: Deny
+          Action: '*'
+          Resource: '*'
+          Condition:
+            StringLike:
+              aws:PrincipalArn:
+                - arn:aws:iam::*:root
