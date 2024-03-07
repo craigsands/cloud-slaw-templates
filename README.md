@@ -19,6 +19,7 @@ organized by lab number in the outline below, in roughly reverse chronological o
 
 | Posted Date | Lab Name | Templates |
 | --- | --- | --- |
+| 2024-02-15 | Assume the Role! (Centralized Logging, Part 1) | [CloudTrailOrgBucket](./templates/CloudTrailOrgBucket.template) |
 | 2024-02-08 | Give Your Account a Security Blanket with SCPs | [ProtectRootAndOrg](./templates/ProtectRootAndOrg.template) |
 | 2024-02-01 | Enable AWS Organizations | [OrganizationsOrganization](./templates/OrganizationsOrganization.template), [SecurityAccounts](./templates/SecurityAccounts.template) |
 | 2024-01-18 | Write a Simple IAM Policy | [CloudTrailReadWrite](./templates/CloudTrailReadWrite.template) |

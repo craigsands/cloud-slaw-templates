@@ -1,0 +1,9 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Resources:
+  CloudTrailOrgBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub
+        - aws-cloudtrail-logs-${AWS::AccountId}-${RandomSuffix}
+        - {RandomSuffix: !Select [0, !Split ['-', !Select [2, !Split [/, !Ref 'AWS::StackId']]]]}
