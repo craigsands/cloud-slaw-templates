@@ -4,7 +4,7 @@ CloudFormation templates for Cloud Security Lab a Week (S.L.A.W.)
 
 ## Notes
 
-1. I'd like to thank Rich for creating this blog. I understand that each organization
+1. I'd like to thank Rich for creating [this blog](https://slaw.securosis.com/). I understand that each organization
 has unique elements to it, but I love the idea of 'bootstrapping' new (or even existing)
 organizations with common conventions of the security community. This repository is
 designed to help in that end.
@@ -13,7 +13,7 @@ are designed to be atomic in nature. However, rather than be representative of
 "snapshots in time," they can build off each other (using references) when possible, or
 where it makes sense, combined (as in one template being the result of multiple labs).
 In order to preserve as much of the lab "flow" as possible, the templates will be
-organized by lab number in the outline below, in roughly reverse chronological order.
+organized by lab in the outline below, in roughly reverse chronological order.
 
 ## Outline
 
