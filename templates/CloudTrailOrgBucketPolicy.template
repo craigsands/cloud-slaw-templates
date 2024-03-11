@@ -1,0 +1,83 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Parameters:
+  CloudTrailOrgBucketStackName:
+    Description: Name of an active CloudFormation stack that contains the organization-wide CloudTrail S3 bucket resource
+    Type: String
+    Default: CloudTrailOrgBucket
+    MinLength: 1
+    MaxLength: 255
+    AllowedPattern: ^[a-zA-Z][-a-zA-Z0-9]*$
+
+  CloudTrailOrgTrailArn:
+    Description: ARN of the organization-wide CloudTrail trail
+    Type: String
+    AllowedPattern: ^arn:aws:cloudtrail:[a-z]{2}(-gov)?-[a-z]{4,9}-\d:\d{12}:trail/.*$
+
+  ManagementAccountId:
+    Description: ID of the organization management account
+    Type: String
+    AllowedPattern: ^\d{12}$
+
+  OrganizationId:
+    Description: ID of the organization
+    Type: String
+    AllowedPattern: ^o-[a-z0-9]{10,32}$
+
+Resources:
+  CloudTrailOrgBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !ImportValue
+        Fn::Sub: ${CloudTrailOrgBucketStackName}-BucketName
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: AWSCloudTrailAclCheck20150319
+            Effect: Allow
+            Principal:
+              Service:
+                - cloudtrail.amazonaws.com
+            Action:
+              - s3:GetBucketAcl
+            Resource: !Join
+              - ""
+              - - 'arn:aws:s3:::'
+                - !Sub '${CloudTrailOrgBucketStackName}-BucketName'
+            Condition:
+              StringEquals:
+                aws:SourceArn: !Ref CloudTrailOrgTrailArn
+          - Sid: AWSCloudTrailWrite20150319
+            Effect: Allow
+            Principal:
+              Service:
+                - cloudtrail.amazonaws.com
+            Action: s3:PutObject
+            Resource: !Join
+              - ""
+              - - !ImportValue
+                  Fn::Sub: ${CloudTrailOrgBucketStackName}-BucketName
+                - /AWSLogs/
+                - !Ref ManagementAccountId
+                - /*
+            Condition:
+              StringEquals:
+                s3:x-amz-acl: bucket-owner-full-control
+                aws:SourceArn: !Ref CloudTrailOrgTrailArn
+          - Sid: AWSCloudTrailOrganizationWrite20150319
+            Effect: Allow
+            Principal:
+              Service:
+                - cloudtrail.amazonaws.com
+            Action: s3:PutObject
+            Resource: !Join
+              - ""
+              - - !ImportValue
+                  Fn::Sub: ${CloudTrailOrgBucketStackName}-BucketName
+                - /AWSLogs/
+                - !Ref OrganizationId
+                - /*
+            Condition:
+              StringEquals:
+                s3:x-amz-acl: bucket-owner-full-control
+                aws:SourceArn: !Ref CloudTrailOrgTrailArn
