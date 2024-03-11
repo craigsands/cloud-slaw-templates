@@ -43,7 +43,8 @@ Resources:
             Resource: !Join
               - ""
               - - 'arn:aws:s3:::'
-                - !Sub '${CloudTrailOrgBucketStackName}-BucketName'
+                - !ImportValue
+                  Fn::Sub: ${CloudTrailOrgBucketStackName}-BucketName
             Condition:
               StringEquals:
                 aws:SourceArn: !Ref CloudTrailOrgTrailArn
