@@ -1,0 +1,15 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Parameters:
+  IdentityCenterManagingInstanceId:
+    Description: ID of the Identity Center managing instance
+    Type: String
+    AllowedPattern: ^ssoins-[a-z0-9]+$
+
+Resources:
+  AdministratorsGroup:
+    Type: AWS::IdentityStore::Group
+    Properties:
+      Description: Full admin
+      DisplayName: Administrators
+      IdentityStoreId: !Ref IdentityCenterManagingInstanceId

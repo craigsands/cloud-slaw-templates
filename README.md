@@ -19,6 +19,7 @@ organized by lab in the outline below, in roughly reverse chronological order.
 
 | Posted Date | Lab Name | Templates |
 | --- | --- | --- |
+| 2024-03-07 | Bring in the Fed(eration): SSO | [IdentityCenterAdministrators](./templates/IdentityCenterAdministrators.template) |
 | 2024-02-22 | Secure that Bucket! (Centralized Logging: Part 2) | [CloudTrailOrgBucketPolicy](./templates/CloudTrailOrgBucketPolicy.template) |
 | 2024-02-15 | Assume the Role! (Centralized Logging, Part 1) | [CloudTrailOrgBucket](./templates/CloudTrailOrgBucket.template) |
 | 2024-02-08 | Give Your Account a Security Blanket with SCPs | [ProtectRootAndOrg](./templates/ProtectRootAndOrg.template) |
