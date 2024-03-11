@@ -4,7 +4,7 @@ Parameters:
   IdentityCenterManagingInstanceId:
     Description: ID of the Identity Center managing instance
     Type: String
-    AllowedPattern: ^ssoins-[a-z0-9]+$
+    AllowedPattern: ^d-[0-9a-f]{10}$|^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$
 
 Resources:
   AdministratorsGroup:
