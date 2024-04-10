@@ -8,10 +8,17 @@ Parameters:
     Type: String
     AllowedPattern: ^arn:(aws|aws-us-gov|aws-cn|aws-iso|aws-iso-b):sso:::instance/(sso)?ins-[a-zA-Z0-9-.]{16}$
 
+  TargetAccountIds:
+    Description: Comma-delimited list of AWS account IDs to grant assignment
+    Type: CommaDelimitedList
+    AllowedPattern: ^\d{12}$
+
   GroupPrincipalId:
     Description: ID of the Identity Center group to grant permission
     Type: String
     AllowedPattern: ^([0-9a-f]{10}-|)[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}$
+
+Transform: AWS::LanguageExtensions
 
 Resources:
   AdministratorAccessPermissionSet:
@@ -23,12 +30,20 @@ Resources:
       ManagedPolicies:
         - arn:aws:iam::aws:policy/AdministratorAccess
 
-  AdministratorAccessAssignment:
-    Type: AWS::SSO::Assignment
-    Properties:
-      InstanceArn: !Ref IdentityCenterManagingInstanceArn
-      PermissionSetArn: !GetAtt AdministratorAccessPermissionSet.PermissionSetArn
-      TargetId: !Ref "AWS::AccountId"
-      TargetType: AWS_ACCOUNT
-      PrincipalType: GROUP
-      PrincipalId: !Ref GroupPrincipalId
+  Fn::ForEach::TargetAccounts:
+    - TargetAccountId
+    - !Ref TargetAccountIds
+    - AdministratorAccessAssignment${TargetAccountId}:
+        Type: AWS::SSO::Assignment
+        Metadata:
+          cfn-lint:
+            config:
+              ignore_checks:
+                - E3031
+        Properties:
+          InstanceArn: !Ref IdentityCenterManagingInstanceArn
+          PermissionSetArn: !GetAtt AdministratorAccessPermissionSet.PermissionSetArn
+          TargetId: !Ref TargetAccountId
+          TargetType: AWS_ACCOUNT
+          PrincipalType: GROUP
+          PrincipalId: !Ref GroupPrincipalId
