@@ -19,6 +19,7 @@ CloudFormation templates for Cloud Security Lab a Week (S.L.A.W.)
 
 | Posted Date | Lab Name                                          | Templates                                                                                                                              |
 | ----------- | ------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| 2024-03-14  | Another Me? SSO with IAM Identity Center, Part 2  | [SSOAdministratorAccess](./templates/SSOAdministratorAccess.template)                                                                  |
 | 2024-03-07  | Bring in the Fed(eration): SSO                    | [IdentityCenterAdministratorsGroup](./templates/IdentityCenterAdministratorsGroup.template)                                            |
 | 2024-02-22  | Secure that Bucket! (Centralized Logging: Part 2) | [CloudTrailOrgBucketPolicy](./templates/CloudTrailOrgBucketPolicy.template)                                                            |
 | 2024-02-15  | Assume the Role! (Centralized Logging, Part 1)    | [CloudTrailOrgBucket](./templates/CloudTrailOrgBucket.template)                                                                        |
