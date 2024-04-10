@@ -1,5 +1,7 @@
 AWSTemplateFormatVersion: "2010-09-09"
 
+Description: Assign AdministratorAccess and this account to an Identity Store group.
+
 Parameters:
   IdentityCenterManagingInstanceArn:
     Description: ARN of the Identity Center managing instance
