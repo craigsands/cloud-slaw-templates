@@ -6,11 +6,6 @@ Parameters:
     Type: String
     AllowedPattern: ^arn:(aws|aws-us-gov|aws-cn|aws-iso|aws-iso-b):sso:::instance/(sso)?ins-[a-zA-Z0-9-.]{16}$
 
-  TargetAccountId:
-    Description: ID of the AWS account to grant assignment
-    Type: String
-    AllowedPattern: ^\d{12}$
-
   GroupPrincipalId:
     Description: ID of the Identity Center group to grant permission
     Type: String
@@ -31,7 +26,7 @@ Resources:
     Properties:
       InstanceArn: !Ref IdentityCenterManagingInstanceArn
       PermissionSetArn: !GetAtt AdministratorAccessPermissionSet.PermissionSetArn
-      TargetId: !Ref TargetAccountId
+      TargetId: !Ref "AWS::AccountId"
       TargetType: AWS_ACCOUNT
       PrincipalType: GROUP
       PrincipalId: !Ref GroupPrincipalId
