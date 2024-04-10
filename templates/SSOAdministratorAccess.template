@@ -1,0 +1,37 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Parameters:
+  IdentityCenterManagingInstanceArn:
+    Description: ARN of the Identity Center managing instance
+    Type: String
+    AllowedPattern: ^arn:(aws|aws-us-gov|aws-cn|aws-iso|aws-iso-b):sso:::instance/(sso)?ins-[a-zA-Z0-9-.]{16}$
+
+  TargetAccountId:
+    Description: ID of the AWS account to grant assignment
+    Type: String
+    AllowedPattern: ^\d{12}$
+
+  GroupPrincipalId:
+    Description: ID of the Identity Center group to grant permission
+    Type: String
+    AllowedPattern: ^([0-9a-f]{10}-|)[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}$
+
+Resources:
+  AdministratorAccessPermissionSet:
+    Type: AWS::SSO::PermissionSet
+    Properties:
+      InstanceArn: !Ref IdentityCenterManagingInstanceArn
+      Name: AdministratorAccess
+      Description: Full admin
+      ManagedPolicies:
+        - arn:aws:iam::aws:policy/AdministratorAccess
+
+  AdministratorAccessAssignment:
+    Type: AWS::SSO::Assignment
+    Properties:
+      InstanceArn: !Ref IdentityCenterManagingInstanceArn
+      PermissionSetArn: !GetAtt AdministratorAccessPermissionSet.PermissionSetArn
+      TargetId: !Ref TargetAccountId
+      TargetType: AWS_ACCOUNT
+      PrincipalType: GROUP
+      PrincipalId: !Ref GroupPrincipalId
