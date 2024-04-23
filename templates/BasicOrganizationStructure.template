@@ -1,0 +1,24 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Parameters:
+  OrganizationRootId:
+    Type: String
+
+Transform: AWS::LanguageExtensions
+
+Resources:
+  Fn::ForEach::OrganizationalUnits:
+    - OrganizationalUnit
+    - - Infrastructure
+      - Workloads
+      - Exceptions
+      - Sandbox
+      - Onboarding
+      - Nursery
+      - Suspended
+      - IncidentResponse
+    - ${OrganizationalUnit}OU:
+        Type: AWS::Organizations::OrganizationalUnit
+        Properties:
+          Name: !Ref OrganizationalUnit
+          ParentId: !Ref OrganizationRootId

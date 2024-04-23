@@ -7,6 +7,12 @@ Parameters:
   SecurityAuditEmail:
     Type: String
 
+  IAMEmail:
+    Type: String
+
+  SecurityOperationsEmail:
+    Type: String
+
 Resources:
   SecurityOU:
     Type: AWS::Organizations::OrganizationalUnit
@@ -19,5 +25,21 @@ Resources:
     Properties:
       AccountName: SecurityAudit
       Email: !Ref SecurityAuditEmail
+      ParentIds:
+        - !Ref SecurityOU
+
+  IAM:
+    Type: AWS::Organizations::Account
+    Properties:
+      AccountName: IAM
+      Email: !Ref IAMEmail
+      ParentIds:
+        - !Ref SecurityOU
+
+  SecurityOperations:
+    Type: AWS::Organizations::Account
+    Properties:
+      AccountName: SecurityOperations
+      Email: !Ref SecurityOperationsEmail
       ParentIds:
         - !Ref SecurityOU
