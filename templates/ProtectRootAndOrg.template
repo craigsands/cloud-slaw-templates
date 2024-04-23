@@ -2,6 +2,12 @@ AWSTemplateFormatVersion: "2010-09-09"
 
 Description: Restrict the root account and the ability to leave AWS Organizations
 
+Parameters:
+  TargetIds:
+    Description: Comma-delimited list of unique identifiers (IDs) of the root, OU, or account that you want to attach the policy to.
+    Type: CommaDelimitedList
+    AllowedPattern: ^(r-[0-9a-z]{4,32})|(\d{12})|(ou-[0-9a-z]{4,32}-[a-z0-9]{8,32})$
+
 Resources:
   SCPProtectRootAndOrg:
     DeletionPolicy: Retain
@@ -26,3 +32,4 @@ Resources:
               StringLike:
                 aws:PrincipalArn:
                   - arn:aws:iam::*:root
+      TargetIds: !Ref TargetIds
