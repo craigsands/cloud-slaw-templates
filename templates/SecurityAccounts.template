@@ -13,6 +13,9 @@ Parameters:
   SecurityOperationsEmail:
     Type: String
 
+  LogArchiveEmail:
+    Type: String
+
 Resources:
   SecurityOU:
     Type: AWS::Organizations::OrganizationalUnit
@@ -41,5 +44,13 @@ Resources:
     Properties:
       AccountName: SecurityOperations
       Email: !Ref SecurityOperationsEmail
+      ParentIds:
+        - !Ref SecurityOU
+
+  LogArchive:
+    Type: AWS::Organizations::Account
+    Properties:
+      AccountName: LogArchive
+      Email: !Ref LogArchiveEmail
       ParentIds:
         - !Ref SecurityOU
