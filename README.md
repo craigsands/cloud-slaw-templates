@@ -19,6 +19,7 @@ CloudFormation templates for Cloud Security Lab a Week (S.L.A.W.)
 
 | Posted Date | Lab Name                                          | Templates                                                                                                                                |
 | ----------- | ------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| 2024-03-28  | OUs, SCPs, and a Root User Account Recovery       | [ProtectRootAndOrg](./templates/ProtectRootAndOrg.template)                                                                              |
 | 2024-03-21  | AWS LEGO: Organizing the Org                      | [BasicOrganizationStructure](./templates/BasicOrganizationStructure.template), [SecurityAccounts](./templates/SecurityAccounts.template) |
 | 2024-03-14  | Another Me? SSO with IAM Identity Center, Part 2  | [SSOAdministratorAccess](./templates/SSOAdministratorAccess.template)                                                                    |
 | 2024-03-07  | Bring in the Fed(eration): SSO                    | [IdentityCenterAdministratorsGroup](./templates/IdentityCenterAdministratorsGroup.template)                                              |
