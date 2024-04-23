@@ -18,12 +18,16 @@ Parameters:
 
 Resources:
   SecurityOU:
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
     Type: AWS::Organizations::OrganizationalUnit
     Properties:
       Name: Security
       ParentId: !Ref OrganizationRootId
 
   SecurityAudit:
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
     Type: AWS::Organizations::Account
     Properties:
       AccountName: SecurityAudit
@@ -32,6 +36,8 @@ Resources:
         - !Ref SecurityOU
 
   IAM:
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
     Type: AWS::Organizations::Account
     Properties:
       AccountName: IAM
@@ -40,6 +46,8 @@ Resources:
         - !Ref SecurityOU
 
   SecurityOperations:
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
     Type: AWS::Organizations::Account
     Properties:
       AccountName: SecurityOperations
@@ -48,6 +56,8 @@ Resources:
         - !Ref SecurityOU
 
   LogArchive:
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
     Type: AWS::Organizations::Account
     Properties:
       AccountName: LogArchive
