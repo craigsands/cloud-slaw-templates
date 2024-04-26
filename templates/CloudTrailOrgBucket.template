@@ -7,6 +7,12 @@ Resources:
       BucketName: !Sub
         - aws-cloudtrail-logs-${AWS::AccountId}-${RandomSuffix}
         - {RandomSuffix: !Select [0, !Split ['-', !Select [2, !Split [/, !Ref 'AWS::StackId']]]]}
+      LifecycleConfiguration:
+        Rules:
+          - Id: DeleteOldObjects
+            Status: Enabled
+            ExpirationInDays: 90
+            NoncurrentVersionExpirationInDays: 90
 
 Outputs:
   BucketName:
