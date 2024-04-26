@@ -1,0 +1,75 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: Block all regions except us-west-2 and us-east-1, and allow global services
+
+Parameters:
+  OrganizationRootId:
+    Description: Unique identifier for the root organizational unit
+    Type: String
+    AllowedPattern: ^(r-[0-9a-z]{4,32})$
+
+Resources:
+  SCPRegionLockout:
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Type: AWS::Organizations::Policy
+    Properties:
+      Type: SERVICE_CONTROL_POLICY
+      Name: SCPRegionLockout
+      Content:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: DenyAllOutsideRegions
+            Effect: Deny
+            NotAction:
+              - organizations:LeaveOrganization
+              - a4b:*
+              - acm:*
+              - aws-marketplace-management:*
+              - aws-marketplace:*
+              - aws-portal:*
+              - budgets:*
+              - ce:*
+              - chime:*
+              - cloudfront:*
+              - config:*
+              - cur:*
+              - directconnect:*
+              - ec2:DescribeRegions
+              - ec2:DescribeTransitGateways
+              - ec2:DescribeVpnGateways
+              - fms:*
+              - globalaccelerator:*
+              - health:*
+              - iam:*
+              - importexport:*
+              - kms:*
+              - mobileanalytics:*
+              - networkmanager:*
+              - organizations:*
+              - pricing:*
+              - route53:*
+              - route53domains:*
+              - route53-recovery-cluster:*
+              - route53-recovery-control-config:*
+              - route53-recovery-readiness:*
+              - s3:GetAccountPublic*
+              - s3:ListAllMyBuckets
+              - s3:ListMultiRegionAccessPoints
+              - s3:PutAccountPublic*
+              - shield:*
+              - sts:*
+              - support:*
+              - trustedadvisor:*
+              - waf-regional:*
+              - waf:*
+              - wafv2:*
+              - wellarchitected:*
+            Resource: '*'
+            Condition:
+              StringNotEquals:
+                aws:RequestedRegion:
+                  - us-east-1
+                  - us-west-2
+      TargetIds:
+        - !Ref OrganizationRootId
