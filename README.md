@@ -17,15 +17,16 @@ CloudFormation templates for Cloud Security Lab a Week (S.L.A.W.)
 
 ## Outline
 
-| Posted Date | Lab Name                                          | Templates                                                                                                                                |
-| ----------- | ------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| 2024-03-28  | OUs, SCPs, and a Root User Account Recovery       | [ProtectRootAndOrg](./templates/ProtectRootAndOrg.template)                                                                              |
-| 2024-03-21  | AWS LEGO: Organizing the Org                      | [BasicOrganizationStructure](./templates/BasicOrganizationStructure.template), [SecurityAccounts](./templates/SecurityAccounts.template) |
-| 2024-03-14  | Another Me? SSO with IAM Identity Center, Part 2  | [SSOAdministratorAccess](./templates/SSOAdministratorAccess.template)                                                                    |
-| 2024-03-07  | Bring in the Fed(eration): SSO                    | [IdentityCenterAdministratorsGroup](./templates/IdentityCenterAdministratorsGroup.template)                                              |
-| 2024-02-22  | Secure that Bucket! (Centralized Logging: Part 2) | [CloudTrailOrgBucketPolicy](./templates/CloudTrailOrgBucketPolicy.template)                                                              |
-| 2024-02-15  | Assume the Role! (Centralized Logging, Part 1)    | [CloudTrailOrgBucket](./templates/CloudTrailOrgBucket.template)                                                                          |
-| 2024-02-08  | Give Your Account a Security Blanket with SCPs    | [ProtectRootAndOrg](./templates/ProtectRootAndOrg.template)                                                                              |
-| 2024-02-01  | Enable AWS Organizations                          | [OrganizationsOrganization](./templates/OrganizationsOrganization.template), [SecurityAccounts](./templates/SecurityAccounts.template)   |
-| 2024-01-18  | Write a Simple IAM Policy                         | [CloudTrailReadWrite](./templates/CloudTrailReadWrite.template)                                                                          |
-| 2024-01-11  | Create Your First AWS IAM Role                    | [SSMInstance](./templates/SSMInstance.template)                                                                                          |
+| Posted Date | Lab Name                                               | Templates                                                                                                                                |
+| ----------- | ------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| 2024-04-04  | NotWhat?!? Lock Out Regions with a Double Negative SCP | [RegionLockoutPolicy](./templates/RegionLockoutPolicy.template)                                                                          |
+| 2024-03-28  | OUs, SCPs, and a Root User Account Recovery            | [ProtectRootAndOrg](./templates/ProtectRootAndOrg.template)                                                                              |
+| 2024-03-21  | AWS LEGO: Organizing the Org                           | [BasicOrganizationStructure](./templates/BasicOrganizationStructure.template), [SecurityAccounts](./templates/SecurityAccounts.template) |
+| 2024-03-14  | Another Me? SSO with IAM Identity Center, Part 2       | [SSOAdministratorAccess](./templates/SSOAdministratorAccess.template)                                                                    |
+| 2024-03-07  | Bring in the Fed(eration): SSO                         | [IdentityCenterAdministratorsGroup](./templates/IdentityCenterAdministratorsGroup.template)                                              |
+| 2024-02-22  | Secure that Bucket! (Centralized Logging: Part 2)      | [CloudTrailOrgBucketPolicy](./templates/CloudTrailOrgBucketPolicy.template)                                                              |
+| 2024-02-15  | Assume the Role! (Centralized Logging, Part 1)         | [CloudTrailOrgBucket](./templates/CloudTrailOrgBucket.template)                                                                          |
+| 2024-02-08  | Give Your Account a Security Blanket with SCPs         | [ProtectRootAndOrg](./templates/ProtectRootAndOrg.template)                                                                              |
+| 2024-02-01  | Enable AWS Organizations                               | [OrganizationsOrganization](./templates/OrganizationsOrganization.template), [SecurityAccounts](./templates/SecurityAccounts.template)   |
+| 2024-01-18  | Write a Simple IAM Policy                              | [CloudTrailReadWrite](./templates/CloudTrailReadWrite.template)                                                                          |
+| 2024-01-11  | Create Your First AWS IAM Role                         | [SSMInstance](./templates/SSMInstance.template)                                                                                          |
