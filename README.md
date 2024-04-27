@@ -19,6 +19,7 @@ CloudFormation templates for Cloud Security Lab a Week (S.L.A.W.)
 
 | Posted Date | Lab Name                                                 | Templates                                                                                                                                |
 | ----------- | -------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| 2024-04-25  | Buttoning up the Org                                     | [WorkloadAccounts](./templates/WorkloadAccounts.template)                                                                                |
 | 2024-04-18  | On the Meaning of Life(cycles), Versions, and Ransomware | [CloudTrailOrgBucket](./templates/CloudTrailOrgBucket.template)                                                                          |
 | 2024-04-04  | NotWhat?!? Lock Out Regions with a Double Negative SCP   | [RegionLockoutPolicy](./templates/RegionLockoutPolicy.template)                                                                          |
 | 2024-03-28  | OUs, SCPs, and a Root User Account Recovery              | [ProtectRootAndOrg](./templates/ProtectRootAndOrg.template)                                                                              |
