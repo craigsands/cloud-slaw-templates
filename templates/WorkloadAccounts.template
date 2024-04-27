@@ -31,6 +31,6 @@ Resources:
         Type: AWS::Organizations::Account
         Properties:
           AccountName: !Ref NonProdWorkloadAccount
-          Email: !Join ['+${NonProdWorkloadAccount}@', [!Select [0, !Split ['@', !Ref AccountEmail]], !Select [1, !Split ['@', !Ref AccountEmail]]]]
+          Email: !Join [!Sub '+${NonProdWorkloadAccount}@', [!Select [0, !Split ['@', !Ref AccountEmail]], !Select [1, !Split ['@', !Ref AccountEmail]]]]
           ParentIds:
             - !Ref NonProdOU
