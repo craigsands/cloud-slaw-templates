@@ -1,0 +1,36 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Parameters:
+  WorkloadsOUId:
+    Type: String
+    AllowedPattern: ^ou-[0-9a-z]{4,32}-[a-z0-9]{8,32}$
+
+  AccountEmail:
+    Type: String
+    AllowedPattern: ^[^\s@]+@[^\s@]+\.[^\s@]+$
+
+Transform: AWS::LanguageExtensions
+
+Resources:
+  NonProdOU:
+    Type: AWS::Organizations::OrganizationalUnit
+    Properties:
+      Name: NonProd
+      ParentId: !Ref WorkloadsOUId
+
+  ProdOU:
+    Type: AWS::Organizations::OrganizationalUnit
+    Properties:
+      Name: Prod
+      ParentId: !Ref WorkloadsOUId
+
+  Fn::ForEach::NonProdWorkloadAccounts:
+    - NonProdWorkloadAccount
+    - - TestAccount1
+    - ${NonProdWorkloadAccount}Account:
+        Type: AWS::Organizations::Account
+        Properties:
+          AccountName: !Ref NonProdWorkloadAccount
+          Email: !Join ['+${NonProdWorkloadAccount}@', [!Select [0, !Split ['@', !Ref AccountEmail]], !Select [1, !Split ['@', !Ref AccountEmail]]]]
+          ParentIds:
+            - !Ref NonProdOU
