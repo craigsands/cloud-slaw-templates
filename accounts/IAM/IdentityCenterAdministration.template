@@ -50,7 +50,7 @@ Resources:
       PrincipalType: GROUP
       PrincipalId: !Ref IAMAdministratorsGroup
 
-  Fn::ForEach::UserIds:
+  Fn::ForEach::Users:
     - UserId
     - !Ref UserIds
     - IAMAdministratorsGroupAssignment${UserId}:
