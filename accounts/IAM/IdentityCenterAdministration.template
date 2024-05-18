@@ -53,7 +53,7 @@ Resources:
   Fn::ForEach::UserIds:
     - UserId
     - !Ref UserIds
-    - IAMAdministratorAccessAssignment${UserId}:
+    - IAMAdministratorsGroupAssignment${UserId}:
         Type: AWS::IdentityStore::GroupMembership
         Metadata:
           cfn-lint:
