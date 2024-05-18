@@ -1,0 +1,67 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Parameters:
+  IdentityCenterIdentityStoreId:
+    Description: ID of the Identity Store
+    Type: String
+    AllowedPattern: ^d-[0-9a-f]{10}$|^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$
+
+  IdentityCenterManagingInstanceArn:
+    Description: ARN of the Identity Center managing instance
+    Type: String
+    AllowedPattern: ^arn:(aws|aws-us-gov|aws-cn|aws-iso|aws-iso-b):sso:::instance/(sso)?ins-[a-zA-Z0-9-.]{16}$
+
+  IAMAccountId:
+    Description: AWS account ID of the IAM management account
+    Type: String
+    AllowedPattern: ^\d{12}$
+
+  UserIds:
+    Description: User IDs to add to the IAM Administrators Group
+    Type: CommaDelimitedList
+    AllowedPattern: ^([0-9a-f]{10}-|)[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}$
+
+Transform: AWS::LanguageExtensions
+
+Resources:
+  IAMAdministratorsGroup:
+    Type: AWS::IdentityStore::Group
+    Properties:
+      DisplayName: IAM Administrators
+      Description: Can administer Identity Center
+      IdentityStoreId: !Ref IdentityCenterIdentityStoreId
+
+  IdentityCenterAdministrationPermissionSet:
+    Type: AWS::SSO::PermissionSet
+    Properties:
+      InstanceArn: !Ref IdentityCenterManagingInstanceArn
+      Name: IdentityCenterAdministration
+      Description: Administer AWS IAM Identity Center from a delegated administration account
+      ManagedPolicies:
+        - arn:aws:iam::aws:policy/AWSSSOMemberAccountAdministrator
+
+  IdentityCenterAdministrationAssignment:
+    Type: AWS::SSO::Assignment
+    Properties:
+      InstanceArn: !Ref IdentityCenterManagingInstanceArn
+      PermissionSetArn: !GetAtt IdentityCenterAdministrationPermissionSet.PermissionSetArn
+      TargetId: !Ref IAMAccountId
+      TargetType: AWS_ACCOUNT
+      PrincipalType: GROUP
+      PrincipalId: !Ref IAMAdministratorsGroup
+
+  Fn::ForEach::UserIds:
+    - UserId
+    - !Ref UserIds
+    - IAMAdministratorAccessAssignment${UserId}:
+        Type: AWS::IdentityStore::GroupMembership
+        Metadata:
+          cfn-lint:
+            config:
+              ignore_checks:
+                - E3031
+        Properties:
+          GroupId: !Ref IAMAdministratorsGroup
+          IdentityStoreId: !Ref IdentityCenterIdentityStoreId
+          MemberId:
+            UserId: !Ref UserId
