@@ -1,0 +1,74 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Parameters:
+  IdentityCenterIdentityStoreId:
+    Description: ID of the Identity Store
+    Type: String
+    AllowedPattern: ^d-[0-9a-f]{10}$|^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$
+
+  IdentityCenterManagingInstanceArn:
+    Description: ARN of the Identity Center managing instance
+    Type: String
+    AllowedPattern: ^arn:(aws|aws-us-gov|aws-cn|aws-iso|aws-iso-b):sso:::instance/(sso)?ins-[a-zA-Z0-9-.]{16}$
+
+  SecurityAccountIds:
+    Description: Comma-delimited list of security-related AWS account IDs to grant assignment
+    Type: CommaDelimitedList
+    AllowedPattern: ^\d{12}$
+
+Transform: AWS::LanguageExtensions
+
+Resources:
+  SecurityAdministratorsGroup:
+    Type: AWS::IdentityStore::Group
+    Properties:
+      DisplayName: Security Administrators
+      IdentityStoreId: !Ref IdentityCenterIdentityStoreId
+
+  SecurityAdministratorAccessPermissionSet:
+    Type: AWS::SSO::PermissionSet
+    Properties:
+      InstanceArn: !Ref IdentityCenterManagingInstanceArn
+      Name: SecurityFullAdmin
+      ManagedPolicies:
+        - arn:aws:iam::aws:policy/AdministratorAccess
+
+  SecurityReadOnlyAccessPermissionSet:
+    Type: AWS::SSO::PermissionSet
+    Properties:
+      InstanceArn: !Ref IdentityCenterManagingInstanceArn
+      Name: ReadOnlyAccess
+      ManagedPolicies:
+        - arn:aws:iam::aws:policy/ReadOnlyAccess
+
+  Fn::ForEach::SecurityAccountIds:
+    - SecurityAccountId
+    - !Ref SecurityAccountIds
+    - SecurityAdministratorAccessAssignment${SecurityAccountId}:
+        Type: AWS::SSO::Assignment
+        Metadata:
+          cfn-lint:
+            config:
+              ignore_checks:
+                - E3031
+        Properties:
+          InstanceArn: !Ref IdentityCenterManagingInstanceArn
+          PermissionSetArn: !GetAtt SecurityAdministratorAccessPermissionSet.PermissionSetArn
+          TargetId: !Ref SecurityAccountId
+          TargetType: AWS_ACCOUNT
+          PrincipalType: GROUP
+          PrincipalId: !Ref SecurityAdministratorsGroup
+      SecurityReadOnlyAccessAssignment${SecurityAccountId}:
+        Type: AWS::SSO::Assignment
+        Metadata:
+          cfn-lint:
+            config:
+              ignore_checks:
+                - E3031
+        Properties:
+          InstanceArn: !Ref IdentityCenterManagingInstanceArn
+          PermissionSetArn: !GetAtt SecurityReadOnlyAccessPermissionSet.PermissionSetArn
+          TargetId: !Ref SecurityAccountId
+          TargetType: AWS_ACCOUNT
+          PrincipalType: GROUP
+          PrincipalId: !Ref SecurityAdministratorsGroup
