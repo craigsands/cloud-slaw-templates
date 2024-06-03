@@ -43,7 +43,7 @@ Resources:
         - arn:aws:iam::aws:policy/ReadOnlyAccess
       SessionDuration: PT1H
 
-  Fn::ForEach::SecurityAccountIds:
+  Fn::ForEach::SecurityAccounts:
     - SecurityAccountId
     - !Ref SecurityAccountIds
     - SecurityAdministratorAccessAssignment${SecurityAccountId}:
