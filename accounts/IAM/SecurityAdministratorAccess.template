@@ -59,7 +59,7 @@ Resources:
           TargetId: !Ref SecurityAccountId
           TargetType: AWS_ACCOUNT
           PrincipalType: GROUP
-          PrincipalId: !Ref SecurityAdministratorsGroup
+          PrincipalId: !GetAtt SecurityAdministratorsGroup.GroupId
       SecurityReadOnlyAccessAssignment${SecurityAccountId}:
         Type: AWS::SSO::Assignment
         Metadata:
@@ -73,4 +73,4 @@ Resources:
           TargetId: !Ref SecurityAccountId
           TargetType: AWS_ACCOUNT
           PrincipalType: GROUP
-          PrincipalId: !Ref SecurityAdministratorsGroup
+          PrincipalId: !GetAtt SecurityAdministratorsGroup.GroupId
