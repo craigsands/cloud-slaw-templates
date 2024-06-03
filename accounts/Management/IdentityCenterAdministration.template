@@ -29,6 +29,7 @@ Resources:
       Description: Administer AWS IAM Identity Center from a delegated administration account
       ManagedPolicies:
         - arn:aws:iam::aws:policy/AWSSSOMemberAccountAdministrator
+      SessionDuration: PT1H
 
   IdentityCenterAdministrationAssignment:
     Type: AWS::SSO::Assignment

@@ -32,6 +32,7 @@ Resources:
       Name: SecurityFullAdmin
       ManagedPolicies:
         - arn:aws:iam::aws:policy/AdministratorAccess
+      SessionDuration: PT1H
 
   SecurityReadOnlyAccessPermissionSet:
     Type: AWS::SSO::PermissionSet
@@ -40,6 +41,7 @@ Resources:
       Name: ReadOnlyAccess
       ManagedPolicies:
         - arn:aws:iam::aws:policy/ReadOnlyAccess
+      SessionDuration: PT1H
 
   Fn::ForEach::SecurityAccountIds:
     - SecurityAccountId
