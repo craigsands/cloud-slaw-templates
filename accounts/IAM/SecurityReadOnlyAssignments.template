@@ -1,0 +1,43 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Parameters:
+  IdentityCenterManagingInstanceArn:
+    Description: ARN of the Identity Center managing instance
+    Type: String
+    AllowedPattern: ^arn:(aws|aws-us-gov|aws-cn|aws-iso|aws-iso-b):sso:::instance/(sso)?ins-[a-zA-Z0-9-.]{16}$
+
+  SecurityReadOnlyAccessPermissionSetArn:
+    Description: ARN of the Security ReadOnlyAccess permission set
+    Type: String
+    AllowedPattern: ^arn:(aws|aws-us-gov|aws-cn|aws-iso|aws-iso-b):sso:::permissionSet/(sso)?ins-[a-zA-Z0-9-.]{16}/ps-[a-zA-Z0-9-./]{16}$
+
+  SecurityAdministratorsGroupId:
+    Description: ID of the Security Administrators group
+    Type: String
+    AllowedPattern: ^([0-9a-f]{10}-|)[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}$
+
+  AccountIds:
+    Description: Comma-delimited list of AWS account IDs to grant assignment
+    Type: CommaDelimitedList
+    AllowedPattern: ^\d{12}$
+
+Transform: AWS::LanguageExtensions
+
+Resources:
+  Fn::ForEach::Accounts:
+    - AccountId
+    - !Ref AccountIds
+    - SecurityReadOnlyAccessAssignment${AccountId}:
+        Type: AWS::SSO::Assignment
+        Metadata:
+          cfn-lint:
+            config:
+              ignore_checks:
+                - E3031
+        Properties:
+          InstanceArn: !Ref IdentityCenterManagingInstanceArn
+          PermissionSetArn: !Ref SecurityReadOnlyAccessPermissionSetArn
+          TargetId: !Ref AccountId
+          TargetType: AWS_ACCOUNT
+          PrincipalType: GROUP
+          PrincipalId: !Ref SecurityAdministratorsGroupId
