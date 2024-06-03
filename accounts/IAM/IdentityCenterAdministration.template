@@ -39,4 +39,4 @@ Resources:
       TargetId: !Ref "AWS::AccountId"
       TargetType: AWS_ACCOUNT
       PrincipalType: GROUP
-      PrincipalId: !Ref IAMAdministratorsGroup
+      PrincipalId: !GetAtt IAMAdministratorsGroup.GroupId
