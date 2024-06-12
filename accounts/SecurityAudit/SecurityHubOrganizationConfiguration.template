@@ -1,0 +1,42 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: Set up Security Hub organization configuration.
+
+Parameters:
+  OrganizationRootId:
+    Description: Unique identifier for the root organizational unit
+    Type: String
+    AllowedPattern: ^(r-[0-9a-z]{4,32})$
+
+Resources:
+  FindingAggregator:
+    Type: AWS::SecurityHub::FindingAggregator
+    Properties:
+      RegionLinkingMode: ALL_REGIONS
+
+  OrganizationConfiguration:
+    Type: AWS::SecurityHub::OrganizationConfiguration
+    DependsOn: FindingAggregator
+    Properties:
+      AutoEnable: false
+      AutoEnableStandards: NONE
+      ConfigurationType: CENTRAL
+
+  ConfigurationPolicy:
+    Type: AWS::SecurityHub::ConfigurationPolicy
+    DependsOn: OrganizationConfiguration
+    Properties:
+      Name: RootSecurityHubConfigurationPolicy
+      ConfigurationPolicy:
+        SecurityHub:
+          ServiceEnabled: true
+          EnabledStandardIdentifiers: []
+          SecurityControlsConfiguration:
+            EnabledSecurityControlIdentifiers: []
+
+  PolicyAssociation:
+    Type: AWS::SecurityHub::PolicyAssociation
+    Properties:
+      ConfigurationPolicyId: !GetAtt ConfigurationPolicy.Id
+      TargetId: !Ref OrganizationRootId
+      TargetType: ROOT

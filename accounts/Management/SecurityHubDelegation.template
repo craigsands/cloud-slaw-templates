@@ -1,0 +1,20 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: Enable Security Hub and delegate administration.
+
+Parameters:
+  AdminAccountId:
+    Description: The AWS account identifier of the account to designate as the Security Hub administrator account.
+    Type: String
+    AllowedPattern: ^[0-9]{12}$
+
+Resources:
+  Hub:
+    Type: AWS::SecurityHub::Hub
+    Properties:
+      EnableDefaultStandards: false
+
+  SecurityHubDelegatedAdmin:
+    Type: AWS::SecurityHub::DelegatedAdmin
+    Properties:
+      AdminAccountId: !Ref AdminAccountId
