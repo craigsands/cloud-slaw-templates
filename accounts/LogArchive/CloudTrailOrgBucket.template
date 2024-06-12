@@ -6,7 +6,15 @@ Resources:
     Properties:
       BucketName: !Sub
         - aws-cloudtrail-logs-${AWS::AccountId}-${RandomSuffix}
-        - {RandomSuffix: !Select [0, !Split ['-', !Select [2, !Split [/, !Ref 'AWS::StackId']]]]}
+        - RandomSuffix: !Select
+            - 0
+            - !Split
+              - '-'
+              - !Select
+                - 2
+                - !Split
+                  - /
+                  - !Ref AWS::StackId
       LifecycleConfiguration:
         Rules:
           - Id: DeleteOldObjects
@@ -19,4 +27,4 @@ Outputs:
     Description: The name of the S3 bucket
     Value: !Ref CloudTrailOrgBucket
     Export:
-      Name: !Sub '${AWS::StackName}-BucketName'
+      Name: !Sub ${AWS::StackName}-BucketName

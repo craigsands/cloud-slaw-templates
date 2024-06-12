@@ -19,4 +19,4 @@ Resources:
             Action:
               - s3:GetObject
               - s3:PutObject
-            Resource: !Sub 'arn:aws:s3:::aws-cloudtrail-logs-${AWS::AccountId}-${BucketSuffix}/*'
+            Resource: !Sub arn:aws:s3:::aws-cloudtrail-logs-${AWS::AccountId}-${BucketSuffix}/*

@@ -36,7 +36,7 @@ Resources:
     Properties:
       InstanceArn: !Ref IdentityCenterManagingInstanceArn
       PermissionSetArn: !GetAtt IdentityCenterAdministrationPermissionSet.PermissionSetArn
-      TargetId: !Ref "AWS::AccountId"
+      TargetId: !Ref AWS::AccountId
       TargetType: AWS_ACCOUNT
       PrincipalType: GROUP
       PrincipalId: !GetAtt IAMAdministratorsGroup.GroupId
