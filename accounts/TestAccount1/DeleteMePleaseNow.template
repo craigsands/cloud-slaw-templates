@@ -1,0 +1,31 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: This policy is a total throwaway — we won’t ever actually use it, it’s just an opportunity to learn skills that you will need later.
+
+Parameters:
+  SourceIP:
+    Description: The source IP address to deny instance termination
+    Type: String
+    AllowedPattern: ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$
+
+Resources:
+  DeleteMePleaseNowPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      ManagedPolicyName: DeleteMePleaseNow
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action:
+              - ec2:StartInstances
+              - ec2:StopInstances
+              - ec2:Describe*
+            Resource: '*'
+          - Effect: Deny
+            Action:
+              - ec2:TerminateInstances
+            Resource: '*'
+            Condition:
+              IpAddress:
+                aws:SourceIp: !Ref SourceIP
