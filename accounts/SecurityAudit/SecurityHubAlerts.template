@@ -1,0 +1,37 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: Use EventBridge for Security Hub alerts
+
+Parameters:
+  Email:
+    Description: The email address to receive notifications.
+    Type: String
+    AllowedPattern: ^[^\s@]+@[^\s@]+\.[^\s@]+$
+
+Resources:
+  SecurityHubTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      DisplayName: SecurityHubAlerts
+      TopicName: SecurityHubAlerts
+
+  SecurityHubAlertsSubscription:
+    Type: AWS::SNS::Subscription
+    Properties:
+      Endpoint: !Ref Email
+      Protocol: email
+      TopicArn: !Ref SecurityHubTopic
+
+  SecurityHubFindingsRule:
+    Type: AWS::Events::Rule
+    Properties:
+      Description: All findings from Security Hub
+      EventPattern:
+        source:
+          - aws.securityhub
+        detail-type:
+          - Security Hub Findings - Imported
+      Name: SecurityHubFindings
+      Targets:
+        - Arn: !Ref SecurityHubTopic
+          Id: SecurityHubTopic
