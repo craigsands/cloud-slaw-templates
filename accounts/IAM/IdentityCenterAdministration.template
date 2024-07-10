@@ -26,7 +26,6 @@ Resources:
     Properties:
       Description: Provides the permissions to create, update, and delete policies in IAM Identity Center.
       ManagedPolicyName: ManagePoliciesForIdentityCenter
-      Path: /
       PolicyDocument:
         Version: "2012-10-17"
         Statement:
@@ -56,6 +55,23 @@ Resources:
       CustomerManagedPolicyReferences:
         - Name: ManagePoliciesForIdentityCenter
       SessionDuration: PT1H
+
+  SSOPermissionBoundaryPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      Description: Restricts an IAM Identity Center administrator from escalating their privileges.
+      ManagedPolicyName: SSOPermissionBoundary
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: AllowAllActions
+            Effect: Allow
+            Action: '*'
+            Resource: '*'
+          - Sid: DenyActionsOnSpecificPermissionSet
+            Effect: Deny
+            Action: '*'
+            Resource: !Ref IdentityCenterAdministrationPermissionSet
 
   IdentityCenterAdministrationAssignment:
     Type: AWS::SSO::Assignment
