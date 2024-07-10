@@ -71,7 +71,7 @@ Resources:
           - Sid: DenyActionsOnSpecificPermissionSet
             Effect: Deny
             Action: '*'
-            Resource: !Ref IdentityCenterAdministrationPermissionSet
+            Resource: !GetAtt IdentityCenterAdministrationPermissionSet.PermissionSetArn
 
   IdentityCenterAdministrationAssignment:
     Type: AWS::SSO::Assignment
