@@ -21,14 +21,40 @@ Resources:
       Description: Can administer Identity Center
       IdentityStoreId: !Ref IdentityCenterIdentityStoreId
 
+  ManagePoliciesForIdentityCenterPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      Description: Provides the permissions to create, update, and delete policies in IAM Identity Center.
+      ManagedPolicyName: ManagePoliciesForIdentityCenter
+      Path: /
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action:
+              - iam:ListPolicies
+              - iam:ListPolicyVersions
+              - iam:GetPolicy
+              - iam:GetPolicyVersion
+              - iam:CreatePolicy
+              - iam:CreatePolicyVersion
+              - iam:DeletePolicy
+              - iam:DeletePolicyVersion
+              - iam:SetDefaultPolicyVersion
+              - iam:ListEntitiesForPolicy
+            Resource: '*'
+
   IdentityCenterAdministrationPermissionSet:
     Type: AWS::SSO::PermissionSet
+    DependsOn: ManagePoliciesForIdentityCenterPolicy
     Properties:
       InstanceArn: !Ref IdentityCenterManagingInstanceArn
       Name: IdentityCenterAdministration
       Description: Administer AWS IAM Identity Center from a delegated administration account
       ManagedPolicies:
         - arn:aws:iam::aws:policy/AWSSSOMemberAccountAdministrator
+      CustomerManagedPolicyReferences:
+        - Name: ManagePoliciesForIdentityCenter
       SessionDuration: PT1H
 
   IdentityCenterAdministrationAssignment:
