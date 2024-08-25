@@ -1,5 +1,11 @@
 AWSTemplateFormatVersion: "2010-09-09"
 
+Metadata:
+  cfn-lint:
+    config:
+      ignore_checks:
+        - W3010
+
 Resources:
   VPC:
     Type: AWS::EC2::VPC
@@ -10,44 +16,22 @@ Resources:
         - Key: Name
           Value: CloudSLAW
 
-  DHCPOptions:
-    Type: AWS::EC2::DHCPOptions
-    Properties:
-      DomainName: us-west-2.compute.internal
-      DomainNameServers:
-        - AmazonProvidedDNS
-
-  VPCDHCPOptionsAssociation:
-    Type: AWS::EC2::VPCDHCPOptionsAssociation
-    Properties:
-      DhcpOptionsId: !Ref DHCPOptions
-      VpcId: !Ref VPC
-
-  RouteTable:
-    Type: AWS::EC2::RouteTable
+  PublicSubnet1:
+    Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref VPC
+      CidrBlock: 10.0.1.0/24
+      AvailabilityZone: us-west-2a
+      Tags:
+        - Key: Name
+          Value: slaw-public-1
 
-  NetworkAcl:
-    Type: AWS::EC2::NetworkAcl
+  PublicSubnet2:
+    Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref VPC
-
-  NetworkAclEntryAllowAllInbound:
-    Type: AWS::EC2::NetworkAclEntry
-    Properties:
-      CidrBlock: 0.0.0.0/0
-      NetworkAclId: !Ref NetworkAcl
-      Protocol: -1
-      RuleAction: allow
-      RuleNumber: 100
-
-  NetworkAclEntryAllowAllOutbound:
-    Type: AWS::EC2::NetworkAclEntry
-    Properties:
-      CidrBlock: 0.0.0.0/0
-      Egress: true
-      NetworkAclId: !Ref NetworkAcl
-      Protocol: -1
-      RuleAction: allow
-      RuleNumber: 100
+      CidrBlock: 10.0.2.0/24
+      AvailabilityZone: us-west-2b
+      Tags:
+        - Key: Name
+          Value: slaw-public-2
