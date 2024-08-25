@@ -31,6 +31,12 @@ Resources:
         - Key: Name
           Value: slaw-public-1
 
+  PublicSubnet1RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnet1
+      RouteTableId: !Ref RouteTable
+
   PublicSubnet2:
     Type: AWS::EC2::Subnet
     Properties:
@@ -40,6 +46,12 @@ Resources:
       Tags:
         - Key: Name
           Value: slaw-public-2
+
+  PublicSubnet2RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnet2
+      RouteTableId: !Ref RouteTable
 
   InternetGateway:
     Type: AWS::EC2::InternetGateway
