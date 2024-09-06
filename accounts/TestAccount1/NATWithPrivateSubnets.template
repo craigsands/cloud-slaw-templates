@@ -1,0 +1,82 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Metadata:
+  cfn-lint:
+    config:
+      ignore_checks:
+        - W3010
+
+Parameters:
+  VPCStackName:
+    Description: Name of an active CloudFormation stack that contains the VPC
+    Type: String
+    Default: VPCWithPublicSubnets
+    MinLength: 1
+    MaxLength: 255
+    AllowedPattern: ^[a-zA-Z][-a-zA-Z0-9]*$
+
+Resources:
+  PrivateSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !ImportValue
+        Fn::Sub: ${VPCStackName}-VpcId
+      CidrBlock: 10.0.3.0/24
+      AvailabilityZone: us-west-2a
+      Tags:
+        - Key: Name
+          Value: slaw-private-1
+
+  PrivateSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !ImportValue
+        Fn::Sub: ${VPCStackName}-VpcId
+      CidrBlock: 10.0.4.0/24
+      AvailabilityZone: us-west-2b
+      Tags:
+        - Key: Name
+          Value: slaw-private-2
+
+  ElasticIP:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+
+  NATGateway:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId: !GetAtt ElasticIP.AllocationId
+      SubnetId: !ImportValue
+        Fn::Sub: ${VPCStackName}-PublicSubnet1Id
+      Tags:
+        - Key: Name
+          Value: slaw-nat
+
+  RouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !ImportValue
+        Fn::Sub: ${VPCStackName}-VpcId
+      Tags:
+        - Key: Name
+          Value: slaw-private-route
+
+  NATGatewayRoute:
+    Type: AWS::EC2::Route
+    Properties:
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId: !Ref NATGateway
+      RouteTableId: !Ref RouteTable
+
+  PrivateSubnet1RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PrivateSubnet1
+      RouteTableId: !Ref RouteTable
+
+  PrivateSubnet2RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PrivateSubnet2
+      RouteTableId: !Ref RouteTable
