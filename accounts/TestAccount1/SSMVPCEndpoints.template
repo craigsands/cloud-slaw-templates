@@ -1,0 +1,56 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Parameters:
+  VPCStackName:
+    Description: Name of an active CloudFormation stack that contains the VPC
+    Type: String
+    Default: VPCWithoutNAT
+    MinLength: 1
+    MaxLength: 255
+    AllowedPattern: ^[a-zA-Z][-a-zA-Z0-9]*$
+
+Resources:
+  SSMVPCEndpoint:
+    Type: AWS::EC2::VPCEndpoint
+    Properties:
+      PrivateDnsEnabled: true
+      SecurityGroupIds:
+        - !ImportValue
+          Fn::Sub: ${VPCStackName}-SLAWSecurityGroupId
+      ServiceName: !Sub com.amazonaws.${AWS::Region}.ssm
+      SubnetIds:
+        - !ImportValue
+          Fn::Sub: ${VPCStackName}-PrivateSubnet1Id
+      VpcEndpointType: Interface
+      VpcId: !ImportValue
+        Fn::Sub: ${VPCStackName}-VpcId
+
+  SSMMessagesVPCEndpoint:
+    Type: AWS::EC2::VPCEndpoint
+    Properties:
+      PrivateDnsEnabled: true
+      SecurityGroupIds:
+        - !ImportValue
+          Fn::Sub: ${VPCStackName}-SLAWSecurityGroupId
+      ServiceName: !Sub com.amazonaws.${AWS::Region}.ssmmessages
+      SubnetIds:
+        - !ImportValue
+          Fn::Sub: ${VPCStackName}-PrivateSubnet1Id
+      VpcEndpointType: Interface
+      VpcId: !ImportValue
+        Fn::Sub: ${VPCStackName}-VpcId
+
+  EC2MessagesVPCEndpoint:
+    Type: AWS::EC2::VPCEndpoint
+    Properties:
+      PrivateDnsEnabled: true
+      SecurityGroupIds:
+        - !ImportValue
+          Fn::Sub: ${VPCStackName}-SLAWSecurityGroupId
+      ServiceName: !Sub com.amazonaws.${AWS::Region}.ec2messages
+      SubnetIds:
+        - !ImportValue
+          Fn::Sub: ${VPCStackName}-PrivateSubnet1Id
+      VpcEndpointType: Interface
+      VpcId: !ImportValue
+        Fn::Sub: ${VPCStackName}-VpcId
