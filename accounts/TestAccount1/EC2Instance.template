@@ -1,6 +1,10 @@
 AWSTemplateFormatVersion: "2010-09-09"
 
 Parameters:
+  ImageId:
+    Description: The ID of the AMI.
+    Type: AWS::EC2::Image::Id
+
   VPCStackName:
     Description: Name of an active CloudFormation stack that contains the VPC
     Type: String
@@ -8,10 +12,6 @@ Parameters:
     MinLength: 1
     MaxLength: 255
     AllowedPattern: ^[a-zA-Z][-a-zA-Z0-9]*$
-
-  ImageId:
-    Description: The ID of the AMI.
-    Type: AWS::EC2::Image::Id
 
 Resources:
   EC2Instance:
