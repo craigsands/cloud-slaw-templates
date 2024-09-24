@@ -1,0 +1,32 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Parameters:
+  ImageId:
+    Description: Region specific image from the Parameter Store
+    Type: AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>
+    Default: /aws/service/ami-amazon-linux-latest/al2023-ami-kernel-6.1-x86_64
+
+  VPCStackName:
+    Description: Name of an active CloudFormation stack that contains the VPC
+    Type: String
+    Default: BasicVPCWithSSM
+    MinLength: 1
+    MaxLength: 255
+    AllowedPattern: ^[a-zA-Z][-a-zA-Z0-9]*$
+
+Resources:
+  EC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      IamInstanceProfile: !ImportValue
+        Fn::Sub: ${VPCStackName}-InstanceProfile
+      ImageId: !Ref ImageId
+      InstanceType: t2.micro
+      SecurityGroupIds:
+        - !ImportValue
+          Fn::Sub: ${VPCStackName}-PrivateSecurityGroupId
+      SubnetId: !ImportValue
+        Fn::Sub: ${VPCStackName}-PrivateSubnet1Id
+      Tags:
+        - Key: Name
+          Value: Slaw
