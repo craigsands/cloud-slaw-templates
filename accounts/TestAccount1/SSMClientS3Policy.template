@@ -1,0 +1,19 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Resources:
+  SSMClientS3Policy:
+    Type: AWS::IAM::RolePolicy
+    Properties:
+      PolicyName: SSMLogs
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action:
+              - s3:PutObject
+            Resource: !Sub arn:aws:s3:::session-manager-logs-${AWS::AccountId}/*
+          - Effect: Allow
+            Action:
+              - s3:GetEncryptionConfiguration
+            Resource: '*'
+      RoleName: SSMClient

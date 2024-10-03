@@ -1,0 +1,28 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Resources:
+  SessionPreferencesDocument:
+    DeletionPolicy: Delete
+    Type: AWS::SSM::Document
+    Properties:
+      Name: SSM-SessionManagerRunShell
+      Content:
+        schemaVersion: "1.0"
+        description: Document to hold regional settings for Session Manager
+        sessionType: Standard_Stream
+        inputs:
+          s3BucketName: !Sub session-manager-logs-${AWS::AccountId}
+          s3KeyPrefix: ""
+          s3EncryptionEnabled: true
+          cloudWatchLogGroupName: ""
+          cloudWatchEncryptionEnabled: true
+          cloudWatchStreamingEnabled: true
+          kmsKeyId: ""
+          runAsEnabled: true
+          runAsDefaultUser: ec2-user
+          idleSessionTimeout: "20"
+          shellProfile:
+            windows: ""
+            linux: ""
+      DocumentFormat: YAML
+      DocumentType: Session

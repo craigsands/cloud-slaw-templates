@@ -4,21 +4,14 @@ CloudFormation templates for Cloud Security Lab a Week (S.L.A.W.)
 
 ## Notes
 
-1. I'd like to thank Rich for creating [this blog](https://slaw.securosis.com/). I understand that each organization
-   has unique elements to it, but I love the idea of 'bootstrapping' new (or even existing)
-   organizations with common conventions of the security community. This repository is
-   designed to help in that end.
-2. These templates will attempt to follow the labs, especially from the sense that they
-   are designed to be atomic in nature. However, rather than be representative of
-   "snapshots in time," they can build off each other (using references) when possible, or
-   where it makes sense, combined (as in one template being the result of multiple labs).
-   In order to preserve as much of the lab "flow" as possible, the templates will be
-   organized by lab in the outline below, in roughly reverse chronological order.
+1. I'd like to thank Rich for creating [this blog](https://slaw.securosis.com/). I understand that each organization has unique elements to it, but I love the idea of 'bootstrapping' new (or even existing) organizations with common conventions of the security community. This repository is designed to help in that end.
+2. These templates will attempt to follow the labs, especially from the sense that they are designed to be atomic in nature. However, rather than be representative of "snapshots in time," they can build off each other (using references) when possible, or where it makes sense, combined (as in one template being the result of multiple labs). In order to preserve as much of the lab "flow" as possible, the templates will be organized by lab in the outline below, in roughly reverse chronological order.
 
 ## Outline
 
 | Posted Date | Lab Name                                                              | Templates                                                                                                                                                                                                                                                                                                                                      |
 | ----------- | --------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2024-09-05  | Enabling Logs in Session Manager                                      | [SSMClientS3Policy](./accounts/TestAccount1/SSMClientS3Policy.template), [SessionManagerRunShellLoggingDocument](./accounts/TestAccount1/SessionManagerRunShellLoggingDocument.template) (both depend on https://cloudslaw.s3.us-west-2.amazonaws.com/lab35.template)                                                                          |
 | 2024-08-29  | Replace SSH with Session Manager                                      | [SessionManagerRunShellDocument](./accounts/TestAccount1/SessionManagerRunShellDocument.template)                                                                                                                                                                                                                                              |
 | 2024-08-22  | Keep Private Subnets Private with VPC Endpoints                       | [SSMVPCEndpoints](./accounts/TestAccount1/SSMVPCEndpoints.template) (depends on [VPCWithoutNAT](./accounts/TestAccount1/VPCWithoutNAT.template), adapted from https://cloudslaw.s3.us-west-2.amazonaws.com/lab33.template to include additional outputs and reference to SSM for the ImageId.)                                                 |
 | 2024-08-15  | Run Our First Instance (FINALLY!)                                     | [EC2Instance](./accounts/TestAccount1/EC2Instance.template) (depends on [BasicVPCWithSSM](./accounts/TestAccount1/BasicVPCWithSSM.template), adapted from https://cloudslaw.s3.us-west-2.amazonaws.com/basicvpcwithssm.template to include additional outputs.)                                                                                |
